@@ -68,12 +68,26 @@ void insertMap(HashMap * map, char * key, void * value) {
 //   b - Si la clave no se encuentra avance hasta encontrarla (método de resolución de colisiones)
 //   c - Si llega a una casilla nula, retorne NULL inmediatamente (no siga avanzando, la clave no está)
 // Recuerde actualizar el índice current a la posición encontrada. Recuerde que el arreglo es circular.
-
 Pair * searchMap(HashMap * map,  char * key) {   
+    if (map==NULL || key ==NULL) return NULL;
 
+    long posi = hash(key, map->capacity);
 
+    while (map->buckets[posi]!=NULL && map->buckets[posi]->key!=NULL ){
+        long aux=posi;
+        if (is_equal(key, map->buckets[posi]->key)==1){
+
+            map->current=posi;
+            return map->buckets[posi];
+        }
+        posi = (posi +1)%map->capacity;
+        if (posi==aux) break;
+    }
+
+    map->current=posi;
     return NULL;
 }
+
 
 // 4. Implemente la función void eraseMap(HashMap * map, char * key). 
 // Está función elimina el dato correspondiente a la clave key. 
