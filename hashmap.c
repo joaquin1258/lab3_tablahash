@@ -123,7 +123,23 @@ Pair * searchMap(HashMap * map,  char * key) {
 // Recuerde actualizar la variable size.
 
 void eraseMap(HashMap * map,  char * key) {    
+    if (map==NULL || key ==NULL) return;
 
+    long posi = hash(key, map->capacity);
+    long aux=posi;
+
+    while (map->buckets[posi]!=NULL && map->buckets[posi]->key!=NULL ){
+
+        if (is_equal(key, map->buckets[posi]->key)==1){
+            map->buckets[posi]->key=NULL;
+            map->size--;
+            return;
+        }
+        posi = (posi +1)%map->capacity;
+        if (posi==aux) break;
+    }
+
+    return;
 
 }
 
@@ -132,13 +148,38 @@ void eraseMap(HashMap * map,  char * key) {
 // Recuerde actualizar el índice.
 
 Pair * firstMap(HashMap * map) {
+    if (map==NULL) return NULL;
+
+
+    long auxiliar=0;
+
+    while(auxiliar<map->capacity){
+        if(map->buckets[auxiliar] !=NULL && map->buckets[auxiliar]->key!=NULL){
+            map->current=auxiliar;
+            return map->buckets[auxiliar];
+        }
+        auxiliar++;
+    }
 
     return NULL;
 }
 
 Pair * nextMap(HashMap * map) {
+    if (map==NULL) return NULL;
+
+
+    long auxiliar=map->current + 1;
+
+    while(auxiliar<map->capacity){
+        if(map->buckets[auxiliar] !=NULL && map->buckets[auxiliar]->key!=NULL){
+            map->current=auxiliar;
+            return map->buckets[auxiliar];
+        }
+        auxiliar++;
+    }
 
     return NULL;
+
 }
 
 
