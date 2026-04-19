@@ -197,6 +197,28 @@ Pair * nextMap(HashMap * map) {
 void enlarge(HashMap * map) {
     enlarge_called = 1; //no borrar (testing purposes)
 
+    if(map==NULL) return;
+    Pair** arreglo_ant= map->buckets;
+    long capacidad_ant = map->capacity;
+
+    map->capacity*=2;
+
+    map->buckets=(Pair**)calloc(map->capacity, sizeof(Pair*));
+    map->size=0;
+
+    long auxiliar=0;
+
+    while(auxiliar<capacidad_ant){
+        if(arreglo_ant[auxiliar] != NULL && arreglo_ant[auxiliar]->key !=NULL){
+            insertMap(map, arreglo_ant[auxiliar]->key, arreglo_ant[auxiliar]->value);
+            free(arreglo_ant[auxiliar]);
+        }
+        auxiliar++;
+    }
+    free(arreglo_ant);
+    return;
+
+
 
 }
 
